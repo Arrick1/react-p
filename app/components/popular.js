@@ -5,6 +5,7 @@ import { FaUser, FaStar, FaCodeBranch, FaExclamationTriangle } from 'react-icons
 
 function LangaugesNav ({ selected, onUpdateLanguage }) {
   const languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python']
+
   return (
     <ul className='flex-center'>
       {languages.map((language) => (
@@ -20,6 +21,7 @@ function LangaugesNav ({ selected, onUpdateLanguage }) {
     </ul>
   )
 }
+
 LangaugesNav.propTypes = {
   selected: PropTypes.string.isRequired,
   onUpdateLanguage: PropTypes.func.isRequired
@@ -79,11 +81,13 @@ ReposGrid.propTypes = {
 export default class Popular extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       selectedLanguage: 'All',
       repos: {},
       error: null,
     }
+
     this.updateLanguage = this.updateLanguage.bind(this)
     this.isLoading = this.isLoading.bind(this)
   }
@@ -95,6 +99,7 @@ export default class Popular extends React.Component {
       selectedLanguage,
       error: null,
     })
+
     if (!this.state.repos[selectedLanguage]) {
       fetchPopularRepos(selectedLanguage)
         .then((data) => {
@@ -107,6 +112,7 @@ export default class Popular extends React.Component {
         })
         .catch((error) => {
           console.warn('Error fetching repos: ', error)
+
           this.setState({
             error: `There was an error fetching the repositories.`
           })
@@ -115,16 +121,19 @@ export default class Popular extends React.Component {
   }
   isLoading() {
     const { selectedLanguage, repos, error } = this.state
+
     return !repos[selectedLanguage] && error === null
   }
   render() {
     const { selectedLanguage, repos, error } = this.state
+
     return (
       <React.Fragment>
         <LangaugesNav
           selected={selectedLanguage}
           onUpdateLanguage={this.updateLanguage}
         />
+
         {this.isLoading() && <p>LOADING</p>}
 
         {error && <p>{error}</p>}
